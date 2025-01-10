@@ -98,6 +98,5 @@ sys_info(void)
 {
   int param;
   argint(0, &param);
-  info(param);
-  return 1;
+  return ((uint64) info(param));
 }
