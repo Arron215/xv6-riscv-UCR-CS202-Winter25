@@ -98,6 +98,6 @@ sys_info(void)
 {
   int param;
   argint(0, &param);
-  info(mode);
-  return 0;
+  info(param);
+  return 1;
 }

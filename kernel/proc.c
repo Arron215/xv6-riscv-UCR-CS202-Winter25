@@ -699,25 +699,29 @@ procdump(void)
 //(2) A count of the number of times the system call “info” has been made by the current process so far;
 //(3) The number of memory pages the current process is using above the address 0xF000000.
 //(4) The address of the kernel stack
-int
+void
 info(int param)
 {
-  struct proc *p;
+  struct proc *p = myproc();
+  acquire(&p->lock);
   if (param == 1){
-    int count = 0;
+    //int count = 0;
     //struct proc proc[NPROC];
-    for(p = proc; p < &proc[NPROC]; p++) {
-    }
+    //for(p = proc; p < &proc[NPROC]; p++) {
+    //}
   }
   if (param == 2) {
-
+    printf("%d ", p->info_count);
   }
   if (param == 3) {
-
+    printf("TBD\n");
   }
   if (param == 4) {
-    p = curproc();
-    printf("%f", p->kstack); //kstack is a 64 bit value, d is for integers 
+    struct proc *s;
+    s = myproc();
+    double address_out = (double) s->kstack;
+    printf("%f \n", address_out); //kstack is a 64 bit value, d is for integers 
   }
-  return 0;
+  p->info_count++;
+  release(&p->lock);
 }
