@@ -91,3 +91,13 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+//Lab 1 Code
+uint64
+sys_info(void)
+{
+  int param;
+  argint(0, &param);
+  info(mode);
+  return 0;
+}

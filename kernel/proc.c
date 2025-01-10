@@ -693,3 +693,31 @@ procdump(void)
     printf("\n");
   }
 }
+
+//Lab 1 Code
+//(1) A count of the processes in the system;
+//(2) A count of the number of times the system call “info” has been made by the current process so far;
+//(3) The number of memory pages the current process is using above the address 0xF000000.
+//(4) The address of the kernel stack
+int
+info(int param)
+{
+  struct proc *p;
+  if (param == 1){
+    int count = 0;
+    //struct proc proc[NPROC];
+    for(p = proc; p < &proc[NPROC]; p++) {
+    }
+  }
+  if (param == 2) {
+
+  }
+  if (param == 3) {
+
+  }
+  if (param == 4) {
+    p = curproc();
+    printf("%f", p->kstack); //kstack is a 64 bit value, d is for integers 
+  }
+  return 0;
+}
