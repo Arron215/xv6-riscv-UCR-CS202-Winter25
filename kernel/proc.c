@@ -722,7 +722,7 @@ info(int param)
     return(p->info_count);
   }
   if (param == 3) { //causing kernel trap
-    uint64 pages_out = p->sz;
+    uint64 pages_out = p->sz/PGSIZE;
     return(pages_out);
   }
   if (param == 4) {
