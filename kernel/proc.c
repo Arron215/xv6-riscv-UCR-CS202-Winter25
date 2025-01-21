@@ -722,8 +722,15 @@ info(int param)
     return(p->info_count);
   }
   if (param == 3) { //causing kernel trap
-    uint64 pages_out = p->sz/PGSIZE;
-    return(pages_out);
+    int page_count = 0;
+    // there are 2^9 = 512 PTEs in a page table.
+    for(int i = 0; i < 512; i++){
+      pte_t pte = p->pagetable[i];
+      if((pte & PTE_V) || (pte & (PTE_R|PTE_W|PTE_X)) > 0xf000000){
+        page_count+=1;
+      } 
+    }
+    return(page_count);
   }
   if (param == 4) {
     uint64 address_out =  p->kstack;

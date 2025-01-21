@@ -107,4 +107,5 @@ struct proc {
 
   //Lab 1 Change
   int info_count;
+
 };
