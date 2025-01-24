@@ -724,10 +724,31 @@ info(int param)
   if (param == 3) { //causing kernel trap
     int page_count = 0;
     // there are 2^9 = 512 PTEs in a page table.
+    //VA 0xF000000
     for(int i = 0; i < 512; i++){
-      pte_t pte = p->pagetable[i];
-      if((pte & PTE_V) || (pte & (PTE_R|PTE_W|PTE_X)) > 0xf000000){
-        page_count+=1;
+      pte_t pte = p->pagetable[i]; //found a PTE
+      if((pte & PTE_V) || (pte & (PTE_R|PTE_W|PTE_X))){
+        printf("PTE: %p, i:%d\n", &pte, i);
+        if (i != 0) { //only if L2 is > 1, can the address be > 0xF000000
+          page_count += 1;
+        }
+        pagetable_t pt2 = (pagetable_t) (PTE2PA((pte)));
+        for(int j = 0; j < 512; j++){
+          pte_t pte2 = pt2[j]; 
+          if((((pte2 & PTE_V) || (pte2 & (PTE_R|PTE_W|PTE_X)))) && (j>120)){
+            printf("PTE2: %p, j:%d\n", &pt2, j);
+            page_count+=1;
+            pagetable_t pt3 = (pagetable_t) (PTE2PA((pte2)));
+            for(int k = 0; k < 512; k++){
+              pte_t pte3 = pt3[k];
+              if(((pte3 & PTE_V) || (pte3 & (PTE_R|PTE_W|PTE_X)))){
+                uint64 va = i << 30, temp = k << 12, temp2 = j << 21;
+                va = va | temp2 | temp;
+                printf("PTE3: %p, k:%d, VA:%p \n", &pt3, k, (uint64*) va);
+              }
+            }
+          }
+        }
       } 
     }
     return(page_count);
